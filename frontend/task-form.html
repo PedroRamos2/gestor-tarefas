@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Tarefa</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="form-title">Nova Tarefa</h1>
+
+    <form id="task-form">
+      <input type="text" id="task-name" placeholder="Nome da tarefa" required>
+
+      <select id="task-status">
+        <option value="pendente">Pendente</option>
+        <option value="andamento">Em andamento</option>
+        <option value="concluida">Concluída</option>
+      </select>
+
+      <label for="task-date">Data de vencimento:</label>
+      <input type="date" id="task-date" required>
+
+      <button type="submit">Salvar</button>
+    </form>
+
+    <button id="cancel">Cancelar</button>
+  </div>
+
+  <script src="js/task-form.js"></script>
+</body>
+</html>
