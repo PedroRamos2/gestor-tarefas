@@ -1,29 +1,70 @@
 const taskList = document.getElementById("task-list");
 const logoutBtn = document.getElementById("logout");
 const newTaskBtn = document.getElementById("new-task");
+const searchInput = document.getElementById("search-input");
 
 // Carregar tarefas do LocalStorage
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+let currentFilter = "todas"; // padrão
+let searchQuery = "";
+
+// Filtrar por status
+function setFilter(filtro) {
+  currentFilter = filtro;
+  renderTasks();
+}
+
+// Escutar digitação na barra de pesquisa
+searchInput.addEventListener("input", (e) => {
+  searchQuery = e.target.value.toLowerCase();
+  renderTasks();
+});
+
 // Renderizar lista de tarefas
 function renderTasks() {
   taskList.innerHTML = "";
-  tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <span>
-        <strong>${task.name}</strong> - 
-        <em>${task.status}</em> - 
-        📅 ${task.date}
-      </span>
-      <button onclick="editTask(${index})">Editar</button>
-      <button onclick="deleteTask(${index})">Excluir</button>
-    `;
-    taskList.appendChild(li);
-  });
+  const hoje = new Date().toISOString().split("T")[0];
+
+  tasks
+    .filter(task => {
+      // Filtrar por status
+      if (currentFilter !== "todas" && task.status !== currentFilter) return false;
+      // Filtrar por pesquisa
+      if (searchQuery && !task.name.toLowerCase().includes(searchQuery)) return false;
+      return true;
+    })
+    .forEach((task, index) => {
+      const li = document.createElement("li");
+
+      // Classe de status
+      let statusClass = "";
+      if (task.status === "pendente") statusClass = "status-pendente";
+      if (task.status === "andamento") statusClass = "status-andamento";
+      if (task.status === "concluida") statusClass = "status-concluida";
+
+      // Verificar se está vencida
+      let vencidaClass = "";
+      if (task.date < hoje && task.status !== "concluida") {
+        vencidaClass = "vencida";
+      }
+
+      li.classList.add(vencidaClass);
+
+      li.innerHTML = `
+        <span>
+          <strong>${task.name}</strong> - 
+          <span class="${statusClass}">${task.status}</span> - 
+          📅 ${task.date}
+        </span>
+        <button onclick="editTask(${index})">Editar</button>
+        <button onclick="deleteTask(${index})">Excluir</button>
+      `;
+      taskList.appendChild(li);
+    });
 }
 
-// Criar nova tarefa → abre o formulário
+// Abrir formulário para criar nova tarefa
 newTaskBtn.addEventListener("click", () => {
   window.location.href = "task-form.html";
 });
@@ -32,16 +73,6 @@ newTaskBtn.addEventListener("click", () => {
 function editTask(index) {
   window.location.href = `task-form.html?edit=${index}`;
 }
-
-// Criar nova tarefa
-newTaskBtn.addEventListener("click", () => {
-  const taskName = prompt("Digite a nova tarefa:");
-  if (taskName) {
-    tasks.push(taskName);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    renderTasks();
-  }
-});
 
 // Deletar tarefa
 function deleteTask(index) {
@@ -58,3 +89,5 @@ logoutBtn.addEventListener("click", () => {
 
 // Iniciar
 renderTasks();
+;
+

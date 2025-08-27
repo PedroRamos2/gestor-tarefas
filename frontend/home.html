@@ -12,6 +12,18 @@
     <button id="logout">Sair</button>
     <button id="new-task">+ Nova Tarefa</button>
 
+    <div class="filters">
+        <button onclick="setFilter('todas')">Todas</button>
+        <button onclick="setFilter('pendente')">Pendentes</button>
+        <button onclick="setFilter('andamento')">Em andamento</button>
+        <button onclick="setFilter('concluida')">Concluídas</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Pesquisar tarefa...">
+    </div>
+
+
     <ul id="task-list">
       <!-- Tarefas vão aparecer aqui -->
     </ul>
