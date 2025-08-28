@@ -1,23 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Gestor de Tarefas</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <div class="container">
-    <h1>Gestor de Tarefas</h1>
-    
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Usuário" required>
-      <input type="password" id="password" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
-    </form>
 
-    <p>Ainda não tem conta? <a href="#">Cadastrar</a></p>
+<body>
+  <div class="auth-container">
+    <div class="container">
+      <div class="logo">
+        <h1>📋 Gestor de Tarefas</h1>
+        <p>Organize suas tarefas de forma simples e eficiente</p>
+      </div>
+
+      <!-- Formulário de Login -->
+      <form id="login-form" class="auth-form">
+        <h2>Entrar</h2>
+        <div class="input-group">
+          <input type="email" id="login-email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="login-password" placeholder="Senha" required>
+        </div>
+        <button type="submit" class="btn-primary">Entrar</button>
+      </form>
+
+      <!-- Formulário de Cadastro -->
+      <form id="register-form" class="auth-form hidden">
+        <h2>Criar Conta</h2>
+        <div class="input-group">
+          <input type="text" id="register-name" placeholder="Nome completo" required>
+        </div>
+        <div class="input-group">
+          <input type="email" id="register-email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="register-password" placeholder="Senha" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="register-confirm-password" placeholder="Confirmar senha" required>
+        </div>
+        <div class="input-group">
+          <input type="tel" id="register-phone" placeholder="WhatsApp (opcional)">
+        </div>
+        <button type="submit" class="btn-primary">Criar Conta</button>
+      </form>
+
+      <div class="auth-links">
+        <p id="login-link">Já tem conta? <a href="#" onclick="toggleForms()">Entrar</a></p>
+        <p id="register-link" class="hidden">Ainda não tem conta? <a href="#" onclick="toggleForms()">Cadastrar</a></p>
+      </div>
+
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+      </div>
+    </div>
   </div>
 
   <script src="js/auth.js"></script>
 </body>
+
 </html>

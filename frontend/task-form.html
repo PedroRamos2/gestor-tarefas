@@ -1,32 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <title>Nova Tarefa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Tarefa - Gestor de Tarefas</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <div class="container">
-    <h1 id="form-title">Nova Tarefa</h1>
+  <div class="app-container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="top-bar-content">
+        <h1 class="app-title" id="form-title">📝 Nova Tarefa</h1>
+        <div class="top-actions">
+          <button class="btn btn-secondary" onclick="window.location.href='home.html'">
+            ← Voltar
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <form id="task-form">
-      <input type="text" id="task-name" placeholder="Nome da tarefa" required>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="content-wrapper">
+        <div class="task-form">
+          <form id="task-form">
+            <div class="form-group">
+              <label for="task-name">Nome da Tarefa *</label>
+              <input type="text" id="task-name" placeholder="Digite o nome da tarefa" required>
+            </div>
 
-      <select id="task-status">
-        <option value="pendente">Pendente</option>
-        <option value="andamento">Em andamento</option>
-        <option value="concluida">Concluída</option>
-      </select>
+            <div class="form-group">
+              <label for="task-description">Descrição</label>
+              <textarea id="task-description" placeholder="Descreva os detalhes da tarefa (opcional)"></textarea>
+            </div>
 
-      <label for="task-date">Data de vencimento:</label>
-      <input type="date" id="task-date" required>
+            <div class="form-group">
+              <label for="task-status">Status</label>
+              <select id="task-status">
+                <option value="pendente">Pendente</option>
+                <option value="andamento">Em andamento</option>
+                <option value="concluida">Concluída</option>
+              </select>
+            </div>
 
-      <button type="submit">Salvar</button>
-    </form>
+            <div class="form-group">
+              <label for="task-priority">Prioridade</label>
+              <select id="task-priority">
+                <option value="baixa">Baixa</option>
+                <option value="media" selected>Média</option>
+                <option value="alta">Alta</option>
+                <option value="urgente">Urgente</option>
+              </select>
+            </div>
 
-    <button id="cancel">Cancelar</button>
+            <div class="form-group">
+              <label for="task-date">Data de Vencimento *</label>
+              <input type="date" id="task-date" required>
+            </div>
+
+            <div class="form-group">
+              <label for="task-time">Horário (opcional)</label>
+              <input type="time" id="task-time">
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="task-notification">
+                Receber notificação no WhatsApp
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="cancel">
+                ❌ Cancelar
+              </button>
+              <button type="submit" class="btn btn-success">
+                💾 Salvar Tarefa
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Salvando tarefa...</p>
+    </div>
   </div>
 
   <script src="js/task-form.js"></script>
 </body>
+
 </html>

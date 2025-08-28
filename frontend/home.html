@@ -1,41 +1,174 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <title>Minhas Tarefas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Tarefas - Gestor de Tarefas</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <div class="container">
-    <h1>Minhas Tarefas</h1>
-
-    <button onclick="toggleDarkMode()">🌙 Modo Escuro</button>
-    <button id="logout">Sair</button>
-    <button id="new-task">+ Nova Tarefa</button>
-
-    <div class="filters">
-        <button onclick="setFilter('todas')">Todas</button>
-        <button onclick="setFilter('pendente')">Pendentes</button>
-        <button onclick="setFilter('andamento')">Em andamento</button>
-        <button onclick="setFilter('concluida')">Concluídas</button>
+  <div class="app-container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="top-bar-content">
+        <h1 class="app-title">📋 Minhas Tarefas</h1>
+      </div>
     </div>
 
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Pesquisar tarefa...">
+    <!-- Filtros e Pesquisa -->
+    <div class="filters-container">
+      <div class="filters-content">
+        <ul class="filters">
+          <li class="filter-item">
+            <button class="filter-btn active" onclick="setFilter('todas')">Todas</button>
+          </li>
+          <li class="filter-item">
+            <button class="filter-btn" onclick="setFilter('pendente')">Pendentes</button>
+          </li>
+          <li class="filter-item">
+            <button class="filter-btn" onclick="setFilter('andamento')">Em andamento</button>
+          </li>
+          <li class="filter-item">
+            <button class="filter-btn" onclick="setFilter('concluida')">Concluídas</button>
+          </li>
+        </ul>
+
+        <div class="search-wrapper">
+          <input type="text" id="search-input" class="search-input" placeholder="🔍 Pesquisar tarefa...">
+        </div>
+      </div>
     </div>
 
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="content-wrapper">
+        <div id="loading" class="loading hidden">
+          <div class="spinner"></div>
+          <p>Carregando tarefas...</p>
+        </div>
 
-    <ul id="task-list">
-      <!-- Tarefas vão aparecer aqui -->
-    </ul>
+        <ul id="task-list" class="task-list">
+          <!-- Tarefas vão aparecer aqui -->
+        </ul>
+
+        <div id="empty-state" class="empty-state hidden">
+          <div class="empty-icon">📝</div>
+          <h3>Nenhuma tarefa encontrada</h3>
+          <p>Comece criando sua primeira tarefa!</p>
+          <button class="btn btn-success" onclick="document.getElementById('new-task').click()">
+            ➕ Criar Tarefa
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <div class="bottom-nav-content">
+        <button class="nav-item active" onclick="window.location.href='home.html'">
+          <div class="icon">📋</div>
+          <div class="label">Tarefas</div>
+        </button>
+
+        <button class="nav-item primary" id="new-task">
+          <div class="icon">➕</div>
+          <div class="label">Nova Tarefa</div>
+        </button>
+
+        <button class="nav-item" onclick="showProfile()">
+          <div class="icon">👤</div>
+          <div class="label">Perfil</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="profile-modal">
+    <div class="profile-content">
+      <button class="profile-close" onclick="hideProfile()">×</button>
+
+      <div class="profile-header">
+        <div class="profile-avatar">👤</div>
+        <div class="profile-name" id="profile-name">Administrador</div>
+        <div class="profile-email" id="profile-email">admin@teste.com</div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="profile-action" onclick="toggleDarkMode()">
+          <div class="icon">🌙</div>
+          <div class="text">
+            <div class="label">Modo Escuro</div>
+            <div class="description">Alternar entre tema claro e escuro</div>
+          </div>
+          <div class="toggle" id="dark-mode-toggle"></div>
+        </button>
+
+        <button class="profile-action" onclick="logout()">
+          <div class="icon">🚪</div>
+          <div class="text">
+            <div class="label">Sair</div>
+            <div class="description">Fazer logout da aplicação</div>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
 
   <script src="js/tasks.js"></script>
   <script>
-    function toggleDarkMode() {
-        document.body.classList.toggle("dark");
-    }
-   </script>
+    function showProfile() {
+      const modal = document.getElementById('profile-modal');
+      modal.classList.add('show');
 
+      // Carregar dados do usuário
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      document.getElementById('profile-name').textContent = user.name || 'Usuário';
+      document.getElementById('profile-email').textContent = user.email || 'email@exemplo.com';
+
+      // Atualizar toggle do modo escuro
+      updateDarkModeToggle();
+    }
+
+    function hideProfile() {
+      const modal = document.getElementById('profile-modal');
+      modal.classList.remove('show');
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+
+      // Salvar preferência
+      localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+
+      // Atualizar toggle
+      updateDarkModeToggle();
+    }
+
+    function updateDarkModeToggle() {
+      const toggle = document.getElementById('dark-mode-toggle');
+      const isDark = document.body.classList.contains('dark');
+      toggle.classList.toggle('active', isDark);
+    }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('profile-modal').addEventListener('click', function (e) {
+      if (e.target === this) {
+        hideProfile();
+      }
+    });
+
+    // Carregar preferência de tema
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkMode = localStorage.getItem('darkMode') === 'true';
+      if (darkMode) {
+        document.body.classList.add('dark');
+      }
+      updateDarkModeToggle();
+    });
+  </script>
 </body>
+
 </html>
