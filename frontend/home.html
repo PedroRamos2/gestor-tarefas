@@ -9,6 +9,7 @@
   <div class="container">
     <h1>Minhas Tarefas</h1>
 
+    <button onclick="toggleDarkMode()">🌙 Modo Escuro</button>
     <button id="logout">Sair</button>
     <button id="new-task">+ Nova Tarefa</button>
 
@@ -30,5 +31,11 @@
   </div>
 
   <script src="js/tasks.js"></script>
+  <script>
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+    }
+   </script>
+
 </body>
 </html>
